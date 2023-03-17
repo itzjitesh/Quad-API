@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark ">
+        <div class=" w-100 order-1 order-md-0 dual-collapse2">
+            <div class="navbar-nav mr-auto">
+                <div id="heading-left">
+                    <span id="heading-link-1">HODLINFO</span>
+                    <span id="heading-link-2">.com</span>
+        
+                    <div>
+                        <span id="heading-below-1">Powered By</span>
+                        <span id="heading-below-2">Finstreet</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mx-auto order-0">
+            <div id="heading-center" class="text-center padding-none col-12 col-sm-12 col-md-2 col-lg-4">
+            
+                <div style="display: flex;" class="btn-group">
+                <a href="#" data-inline="true" type="button" class=" heading-button header-button dropdown-toggle btn btn-secondary"><span class="center-text">INR</span> <span class="caret"></span></a>
+                <a href="#" data-inline="true" type="button" class=" heading-button header-button dropdown-toggle btn btn-secondary"> <span class="center-text">BTC</span> <span class="caret"></span></a>
+                </div>
+                
+            </div>
+        </div>
+        <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+            <div class="navbar-nav ml-auto">
+
+                    <div id="header-time">
+                        <span id = "header-timer" > 60</span>
+                    </div>
+                
+                    <div class="nav-item">
+                        <div id="heading-right-telegram">
+                            <a style="text-decoration: none;" href="https://web.telegram.org/z/">
+                                <img src="/img/telegram.png" alt="Telegram Logo" srcset="">
+                                <span id="telegram-text">Connect Telegram</span> 
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item">
+                        <div class="container">
+                            <label class="switch" for="checkbox">
+                              <input type="checkbox" id="checkbox" />
+                              <div class="slider round"></div>
+                            </label>
+                          </div>
+                    </div>                
+            </div>
+        </div>
+    </nav>
+
+    <table id="data-table">
+        <thead>
+            <tr>
+                <th class="table-heading">#</th>
+                <th class="table-heading">name</th>
+                <th class="table-heading">Last</th>
+                <th class="table-heading">Buy/ Sell Price</th>
+                <th class="table-heading">volume</th>
+                <th class="table-heading">base_unit</th>
+            </tr>
+        </thead>
+        <tbody id="crypto-table"></tbody>
+    </table>
+
+    <script>
+
+        var timer = 60;
+
+        window.setInterval(function(){
+            if (timer > 0)
+                timer--;
+                document.getElementById("header-timer").innerHTML = timer;
+            if (timer <= 0)
+                timer = 60;
+        }, 1000);
+
+      fetch('http://localhost:3000/cryptos')
+        .then(response => response.json())
+        .then(cryptos => {
+          const cryptoTable = document.querySelector('#crypto-table');
+          let index = 1;
+          cryptos.forEach(crypto => {
+            const row = document.createElement('tr');
+            row.setAttribute("class", "crypto-table-row");
+            row.innerHTML = `
+              <td>${index}</td>
+              <td>${crypto.name}</td>
+              <td>&#8377; ${crypto.last}</td>
+              <td>&#8377; ${crypto.buy}/${crypto.sell}</td>
+              <td>${crypto.volume}</td>
+              <td>${crypto.base_unit}</td>
+            `;
+            cryptoTable.appendChild(row);
+            index++;
+          });
+        })
+        .catch(error => console.error(error));
+    </script>
+</body>
+</html>
